@@ -12,7 +12,8 @@ main :: proc() {
 
     for !rl.WindowShouldClose() {
         rl.BeginDrawing()
-        rl.ClearBackground(BACKGROUND_COLOR)
+        rl.ClearBackground(darkBlue)
+        GridDraw()
         rl.EndDrawing()
     }
 

@@ -15,9 +15,6 @@ numCols : int = 10
 @(private="file")
 cellSize : int = 30
 
-@(private="file")
-colors : #soa[dynamic]rl.Color
-
 GridPrint :: proc() {
     for row := 0; row < numRows; row += 1 {
         for column := 0; column < numCols; column += 1 {
@@ -27,3 +24,46 @@ GridPrint :: proc() {
     }
 }
 
+GridDraw :: proc() {
+    for row := 0; row < numRows; row += 1 {
+        for column := 0; column < numCols; column += 1 {
+            cellValue := grid[row][column]
+            rl.DrawRectangle(
+                i32(column * cellSize + 1),
+                i32(row * cellSize + 1),
+                i32(cellSize - 1),
+                i32(cellSize - 1),
+                colors[cellValue]
+            )
+        }
+    }
+}
+
+/*
+GridIsCellOutside :: proc(row: int, column: int) -> bool {
+
+}
+
+GridIsCellEmpty :: proc(row: int, column: int) -> bool {
+
+}
+
+GridClearFullRows :: proc() -> int {
+
+}
+
+@(private="file")
+GridIsRowFull :: proc(row: int) -> bool {
+
+}
+
+@(private="file")
+GridClearRow :: proc(row: int) {
+
+}
+
+@(private="file")
+GridMoveRowDown :: proc(row: int, numRows: int) {
+
+}
+*/
