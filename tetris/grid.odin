@@ -4,12 +4,12 @@ package tetris
 import "core:fmt"
 import rl "vendor:raylib"
 
-grid : [20][10]int
+Grid : [20][10]int
 
 GridPrint :: proc() {
     for row := 0; row < numRows; row += 1 {
         for column := 0; column < numCols; column += 1 {
-            fmt.printf("{} ", grid[row][column])
+            fmt.printf("{} ", Grid[row][column])
         }
         fmt.println()
     }
@@ -18,7 +18,7 @@ GridPrint :: proc() {
 GridDraw :: proc() {
     for row := 0; row < numRows; row += 1 {
         for column := 0; column < numCols; column += 1 {
-            cellValue := grid[row][column]
+            cellValue := Grid[row][column]
             rl.DrawRectangle(
                 i32(column * CELL_SIZE + 1),
                 i32(row * CELL_SIZE + 1),
@@ -30,15 +30,18 @@ GridDraw :: proc() {
     }
 }
 
-/*
 GridIsCellOutside :: proc(row: int, column: int) -> bool {
-
+    if (row >= 0 && row < numRows && column >= 0 && column < numCols) {
+        return false
+    }
+    return true
 }
 
 GridIsCellEmpty :: proc(row: int, column: int) -> bool {
-
+    if Grid[row][column] == 0 do return true
+    return false
 }
-
+/*
 GridClearFullRows :: proc() -> int {
 
 }

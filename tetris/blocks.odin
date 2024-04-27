@@ -1,5 +1,6 @@
 package tetris
 
+import "core:math/rand"
 import rl "vendor:raylib"
 
 Block :: struct {
@@ -13,6 +14,16 @@ Block :: struct {
 
 Position :: struct {
     row, column: int
+}
+
+blocks := []Block{
+    IBlock,
+    JBlock,
+    LBlock,
+    OBlock,
+    SBlock,
+    TBlock,
+    ZBlock
 }
 
 LBlock := Block {
@@ -110,7 +121,7 @@ ZBlock := Block {
     }
 }
 
-BlockDraw :: proc(block: ^Block, offsetX: int, offsetY: int) {
+BlockDraw :: proc(block: ^Block, offsetX: int = 0, offsetY: int = 0) {
     tiles := BlockGetCellPositions(block)
     for item in tiles {
         rl.DrawRectangle(
@@ -150,4 +161,40 @@ BlockUndoRotation :: proc(block: ^Block) {
     if block.rotationState == -1 {
         block^.rotationState = len(block.position) - 1
     }
+}
+
+MoveBlockLeft :: proc(block: ^Block) {
+    if !gameOver {
+        BlockMove(block, 0, -1)
+        if IsBlockOutside(block) || BlockFits(block) == false do BlockMove(block, 0, 1)
+    }
+}
+
+MoveBlockRight :: proc(block: ^Block) {
+    if !gameOver {
+        BlockMove(block, 0, 1)
+        if IsBlockOutside(block) || BlockFits(block) == false do BlockMove(block, 0, -1)
+    }
+}
+
+
+
+IsBlockOutside :: proc(block: ^Block) -> bool{
+    tiles := BlockGetCellPositions(block)
+    for item in tiles {
+        if GridIsCellOutside(item.row, item.column) do return true
+    }
+    return false
+}
+
+BlockFits :: proc(block: ^Block) -> bool {
+    tiles := BlockGetCellPositions(block)
+    for item in tiles {
+        if GridIsCellEmpty(item.row, item.column) == false do return false
+    }
+    return true
+}
+
+GetRandomBlock:: proc() -> Block {
+    return rand.choice(blocks)
 }

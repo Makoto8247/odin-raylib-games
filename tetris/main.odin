@@ -7,16 +7,21 @@ main :: proc() {
     rl.SetWindowPosition(30, 60)
     rl.SetTargetFPS(60)
 
+    GameInitialize()
+
     // Check maked grid
     GridPrint()
+    playerBlock := TBlock
 
     for !rl.WindowShouldClose() {
         rl.BeginDrawing()
         rl.ClearBackground(darkBlue)
         GridDraw()
+        BlockDraw(&playerBlock)
         rl.EndDrawing()
     }
-
+    
+    defer GameDelete()
     defer rl.CloseWindow()
 
 }
