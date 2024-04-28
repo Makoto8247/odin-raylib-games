@@ -44,3 +44,4 @@ EventTriggered :: proc(interval: f64) -> bool {
     }
     return false
 }
+
