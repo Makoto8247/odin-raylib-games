@@ -149,14 +149,16 @@ BlockGetCellPositions :: proc(block: ^Block) -> [dynamic]Position {
     return movedTiles
 }
 
-BlockRotate :: proc(block: ^Block) {
+@(private="file")
+Rotate :: proc(block: ^Block) {
     block^.rotationState += 1
     if block.rotationState == len(block.position) {
         block^.rotationState = 0
     }
 }
 
-BlockUndoRotation :: proc(block: ^Block) {
+@(private="file")
+UndoRotation :: proc(block: ^Block) {
     block^.rotationState -= 1
     if block.rotationState == -1 {
         block^.rotationState = len(block.position) - 1
@@ -177,7 +179,26 @@ MoveBlockRight :: proc(block: ^Block) {
     }
 }
 
+MoveBlockDown :: proc(block: ^Block) {
+    if !gameOver {
+        BlockMove(block, 1, 0)
+        if IsBlockOutside(block) || BlockFits(block) == false {
+            BlockMove(block, -1, 0)
+            LockBlock(block)
+        }
+    }
+}
 
+RotateBlock :: proc(block: ^Block) {
+    if !gameOver {
+        Rotate(block)
+        if (IsBlockOutside(block) || BlockFits(block)) == false {
+            UndoRotation(block)
+        } else {
+            rl.PlaySound(rotateSound)
+        }
+    }
+}
 
 IsBlockOutside :: proc(block: ^Block) -> bool{
     tiles := BlockGetCellPositions(block)

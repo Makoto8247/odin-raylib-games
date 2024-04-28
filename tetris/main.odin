@@ -9,15 +9,11 @@ main :: proc() {
 
     GameInitialize()
 
-    // Check maked grid
-    GridPrint()
-    playerBlock := TBlock
-
     for !rl.WindowShouldClose() {
+        rl.UpdateMusicStream(music)
         rl.BeginDrawing()
         rl.ClearBackground(darkBlue)
         GridDraw()
-        BlockDraw(&playerBlock)
         rl.EndDrawing()
     }
     
